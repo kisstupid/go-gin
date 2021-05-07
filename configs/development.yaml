@@ -1,0 +1,4 @@
+server:
+  port: ":8080"
+db:
+  url: "postgres://admin:admin123@database:5432/go-gin"

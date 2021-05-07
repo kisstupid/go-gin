@@ -1,0 +1,21 @@
+from golang:alpine as builder
+
+user root
+workdir /go/src/go-gin
+
+copy . .
+
+run go mod download && \
+    go mod verify && \
+    go build -tags=nomsgpack -o main
+
+from golang:alpine
+
+user root
+workdir /go/src/go-gin
+
+copy --chown=0:0 --from=builder /go/src/go-gin/main ./
+copy configs/*.yaml ./configs/
+
+expose 8080
+cmd ["./main"]
